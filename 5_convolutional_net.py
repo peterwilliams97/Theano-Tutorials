@@ -1,4 +1,9 @@
 from __future__ import division, print_function
+"""
+    This implementation gives 99.5% accuracy on MNIST
+
+    See benchmarks in http://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.html
+"""
 import theano
 from theano import tensor as T
 from theano.sandbox.rng_mrg import MRG_RandomStreams as RandomStreams
