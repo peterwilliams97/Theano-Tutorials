@@ -4,6 +4,8 @@ from __future__ import division, print_function
 
     See benchmarks in http://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.html
 """
+from time import clock
+import sys
 import theano
 from theano import tensor as T
 from theano.sandbox.rng_mrg import MRG_RandomStreams as RandomStreams
@@ -15,13 +17,14 @@ from theano.tensor.signal.downsample import max_pool_2d
 theano.config.floatX = 'float32'
 theano.config.openmp = True
 print(theano.config)
+print('=' * 80)
+sys.stdout.flush()
 
 
 srng = RandomStreams()
 
 
 def floatX(X):
-
     return np.asarray(X, dtype=theano.config.floatX)
 
 
@@ -123,15 +126,20 @@ def score_str(score):
 
 
 score_list = []
+start_time = clock()
 
 for i in range(1000):
     best_score, best_i = max(score_list) if score_list else (-1.0, -1)
     for start, end in zip(range(0, len(trX), 128), range(128, len(trX), 128)):
         cost = train(trX[start:end], trY[start:end])
     score = np.mean(np.argmax(teY, axis=1) == predict(teX))
+
+    duration = clock() - start_time
     is_best = '***' if score > best_score else ''
-    print('%3d: %s %s' % (i, score_str(score), is_best))
-    if score <= best_score and i >= max(50, best_i + 40):
+
+    print('%3d: %s [%.1f sec] %s' % (i, score_str(score), duration, is_best))
+
+    if score <= best_score and i > max(50, best_i + 20):
         break
     score_list.append((score, i))
 
