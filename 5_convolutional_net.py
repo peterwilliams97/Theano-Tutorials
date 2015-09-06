@@ -128,6 +128,8 @@ def score_str(score):
 score_list = []
 start_time = clock()
 
+print('-' * 80)
+sys.stdout.flush()
 for i in range(1000):
     best_score, best_i = max(score_list) if score_list else (-1.0, -1)
     for start, end in zip(range(0, len(trX), 128), range(128, len(trX), 128)):
@@ -138,6 +140,7 @@ for i in range(1000):
     is_best = '***' if score > best_score else ''
 
     print('%3d: %s [%.1f sec] %s' % (i, score_str(score), duration, is_best))
+    sys.stdout.flush()
 
     if score <= best_score and i > max(50, best_i + 20):
         break
