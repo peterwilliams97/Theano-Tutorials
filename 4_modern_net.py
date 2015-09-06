@@ -7,6 +7,9 @@ from load import mnist
 
 srng = RandomStreams()
 
+theano.config.openmp = True
+print(theano.config)
+
 def floatX(X):
     return np.asarray(X, dtype=theano.config.floatX)
 
@@ -72,6 +75,7 @@ predict = theano.function(inputs=[X], outputs=y_x, allow_input_downcast=True)
 
 def score_str(score):
     return '%.4f %7.4f %.3f' % (score, 1.0 - score, -np.log10(np.abs(1.0 - score)))
+
 score_list = []
 for i in range(1000):
     best_score, best_i = max(score_list) if score_list else (-1.0, -1)
