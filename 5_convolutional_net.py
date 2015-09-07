@@ -139,7 +139,8 @@ for i in range(1000):
     duration = clock() - start_time
     is_best = '***' if score > best_score else ''
 
-    print('%3d: %s [%.1f sec] %s' % (i, score_str(score), duration, is_best))
+    print('%3d: %s [%.1f sec, %.2f sec] %s' % (i, score_str(score), duration, duration/ (i + 1),
+          is_best))
     sys.stdout.flush()
 
     if score <= best_score and i > max(50, best_i + 20):
